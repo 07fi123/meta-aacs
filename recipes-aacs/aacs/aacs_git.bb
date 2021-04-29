@@ -2,7 +2,7 @@ SUMMARY = "bitbake-layers recipe"
 DESCRIPTION = "AndroidAuto client" 
 LICENSE = "GPL-3.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464"
-SRC_URI = "gitsm://github.com/tomasz-grobelny/AACS.git;protocol=https;branch=master \
+SRC_URI = "gitsm://github.com/07fi123/AACS.git;protocol=https;branch=master \
            file://0001-Fix-yocto-build-error.patch \
            "
 SRCREV = "master"
@@ -25,12 +25,12 @@ do_install_append() {
 	install -d ${D}/home/root/AAServer
 	install -d ${D}/home/root/AAClient
 	install -d ${D}${sysconfdir}/udev/rules.d/
-	install -d ${D}${libdir}/gstreamer-1.0/
+	install -d ${D}${libdir}/gstreamer1.0/
 
 	install -m 0755 ${S}/../build/AAServer/AAServer ${D}${bindir}
 	install -m 0755 ${S}/../build/AAClient/AAClient ${D}${bindir}
 	install -m 0755 ${S}/../build/GetEvents/GetEvents ${D}${bindir}
-	install -m 0755 ${S}/../build/AAVideoSink/libAAVideoSink.so ${D}${libdir}/gstreamer-1.0/
+	
 
 	# Install systemd related configuration file
 	if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
@@ -44,10 +44,10 @@ do_install_append() {
 	echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"12d1\", ATTRS{idProduct}==\"107e\", MODE=\"0666\"" >> ${D}${sysconfdir}/udev/rules.d/55-aoa-rule.rules
 
 	install -m 0644 ${S}/AAServer/ssl/* ${D}/home/root/AAServer
-	install -m 0644 ${S}/oe-workdir/aacs-git/AAServer/dhparam.pem ${D}/home/root/AAServer
+	install -m 0644 ${S}/../build/AAServer/dhparam.pem ${D}/home/root/AAServer
 
 	install -m 0644 ${S}/AAClient/ssl/* ${D}/home/root/AAClient
-	install -m 0644 ${S}/oe-workdir/aacs-git/AAClient/dhparam.pem ${D}/home/root/AAClient
+	install -m 0644 ${S}/../build/AAClient/dhparam.pem ${D}/home/root/AAClient
 }
 
 FILES_${PN} += "\
